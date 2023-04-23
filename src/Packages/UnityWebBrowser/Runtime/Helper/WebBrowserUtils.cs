@@ -175,19 +175,19 @@ namespace VoltstroStudios.UnityWebBrowser.Helper
             {
                 StartInfo = new ProcessStartInfo(engineFullProcessPath, arguments)
                 {
-                    CreateNoWindow = true,
+                    CreateNoWindow = false,
                     UseShellExecute = false,
-                    RedirectStandardOutput = true,
-                    RedirectStandardError = true,
+                    RedirectStandardOutput = false,
+                    RedirectStandardError = false,
                     WorkingDirectory = engineDirectory
                 },
                 EnableRaisingEvents = true
             };
-            process.OutputDataReceived += onLogEvent;
-            process.ErrorDataReceived += onErrorLogEvent;
+            //process.OutputDataReceived += onLogEvent;
+            // process.ErrorDataReceived += onErrorLogEvent;
             process.Start();
-            process.BeginOutputReadLine();
-            process.BeginErrorReadLine();
+            //process.BeginOutputReadLine();
+            //process.BeginErrorReadLine();
             return process;
         }
 

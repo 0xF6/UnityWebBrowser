@@ -313,6 +313,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 906994673, guid: eb44fadbfd943194e85df7faf3a9dc5b, type: 3}
+      propertyPath: browserClient.communicationLayer
+      value: 
+      objectReference: {fileID: 11400000, guid: 4be4c66b2261a8a46824b66210b6f191, type: 2}
     - target: {fileID: 7454210984458747666, guid: eb44fadbfd943194e85df7faf3a9dc5b, type: 3}
       propertyPath: m_Name
       value: UnityWebBrowser
@@ -591,3 +595,4 @@ MonoBehaviour:
   - Width: 1920
     Height: 1038
   refreshRate: 1
+  hide: 0

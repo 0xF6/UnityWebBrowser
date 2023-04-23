@@ -16,6 +16,7 @@ using VoltstroStudios.UnityWebBrowser.Engine.Shared.Communications;
 using VoltstroStudios.UnityWebBrowser.Engine.Shared.Core.Logging;
 using VoltstroStudios.UnityWebBrowser.Engine.Shared.Popups;
 using VoltstroStudios.UnityWebBrowser.Engine.Shared.ReadWriters;
+using VoltRpc.Types;
 
 namespace VoltstroStudios.UnityWebBrowser.Engine.Shared.Core;
 
@@ -36,6 +37,11 @@ public abstract class EngineEntryPoint : IDisposable
     ///     Call to invoke new popups
     /// </summary>
     protected EnginePopupManager PopupManager { get; private set; }
+
+    /// <summary>
+    ///     Allows the unity control cookies
+    /// </summary>
+    protected CookieControlsActions CookieControlsActions { get; private set; }
 
     /// <summary>
     ///     Is the <see cref="Client" /> side of the connection connected
@@ -180,6 +186,7 @@ public abstract class EngineEntryPoint : IDisposable
             
             ClientControlsActions = new ClientControlsActions();
             PopupManager = new EnginePopupManager();
+            CookieControlsActions = new CookieControlsActions();
 
             //Run early init
             try
@@ -245,11 +252,15 @@ public abstract class EngineEntryPoint : IDisposable
                 ShutdownAndExitWithError();
                 return;
             }
+            // Add type 
+            ipcHost.TypeReaderWriterManager.AddType<UwbCookie>(new UwbCookieReaderWriter());
+            ipcClient.TypeReaderWriterManager.AddType<UwbCookie>(new UwbCookieReaderWriter());
 
             //Add type readers
             EngineReadWritersManager.AddTypeReadWriters(ipcHost.TypeReaderWriterManager);
             ipcHost.AddService(typeof(IEngineControls), engineControls);
             ipcHost.AddService(typeof(IPopupClientControls), PopupManager);
+            ipcHost.AddService(typeof(ICookieControls), CookieControlsActions);
             ipcHost.StartListeningAsync().ConfigureAwait(false);
 
             EngineReadWritersManager.AddTypeReadWriters(ipcClient.TypeReaderWriterManager);
@@ -263,6 +274,7 @@ public abstract class EngineEntryPoint : IDisposable
                 
                 ClientControlsActions.SetIpcClient(ipcClient);
                 PopupManager.SetIpcClient(ipcClient);
+                CookieControlsActions.SetIpcClient(ipcClient);
             }
             catch (ConnectionFailedException)
             {

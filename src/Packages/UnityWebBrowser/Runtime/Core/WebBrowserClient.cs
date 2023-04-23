@@ -333,7 +333,7 @@ namespace VoltstroStudios.UnityWebBrowser.Core
             //If we have a cache, set the cache path
             if (cache)
             {
-                cachePath ??= new FileInfo($"{browserEngineMainDir}/UWBCache");
+                cachePath ??= new FileInfo($"{browserEngineMainDir}/ChromiumCache/{Guid.NewGuid():N}");
                 argsBuilder.AppendArgument("cache-path", cachePath.FullName, true);
             }
 
